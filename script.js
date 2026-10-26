@@ -1,5 +1,5 @@
 /* =========================================================
-   UNICIVE · BLACK FRIDAY — live 09/11 às 19h45 no YouTube
+   UNICIVE · ÚLTIMA CHANCE — oferta abre 03/11 às 10h e fecha 10/11 às 23h59
 
    Duas metades:
    1. A CENA — abertura (vidro, raios, explosão), fogo e raios ambientes,
@@ -15,13 +15,14 @@
      CONFIG — os únicos valores específicos desta página
      ========================================================= */
   var CONFIG = {
-    /* Início da live. A contagem, o pavio, a agenda e a troca de fase
-       saem todos daqui. */
-    inicio: "2026-11-09T19:45:00-03:00",
+    /* Abertura da oferta (03/11 às 10h). A contagem, o pavio, a agenda e a
+       troca de fase saem todos daqui. */
+    inicio: "2026-11-03T10:00:00-03:00",
 
-    /* Por quanto tempo depois do início a página mostra "ao vivo agora".
-       Passado isso, ela vira "a live acabou" e aponta para a gravação. */
-    duracaoHoras: 3,
+    /* Por quanto tempo depois da abertura a página mostra "oferta aberta".
+       182h = fecha em 10/11 às 23h59 (virada para 11/11 à 00h00). Passado
+       isso, ela vira "oferta encerrada". */
+    duracaoHoras: 182,
 
     /* Quando o pavio começou a queimar (o lançamento da página). A corda
        mostra a fração que falta entre esta data e o início da live. */
@@ -137,10 +138,10 @@
   (function agenda() {
     function utc(ms) { return new Date(ms).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, ""); }
 
-    var titulo = "Black Friday Unicive · ao vivo no YouTube";
+    var titulo = "Última Chance Unicive · a oferta abre às 10h";
     var link   = CONFIG.youtubeLive || CONFIG.youtubeCanal;
-    var desc   = "A live com a condição do ano para a sua graduação na Unicive. Assista em " + link;
-    var fimAgenda = INICIO + 2 * 3600e3;
+    var desc   = "A melhor oferta do ano para a última turma dos tecnólogos EAD de 2026 abre hoje, às 10h, e fecha dia 10/11, às 23h59. Acompanhe em " + link;
+    var fimAgenda = INICIO + 1 * 3600e3;
 
     var google = "https://calendar.google.com/calendar/render?action=TEMPLATE" +
       "&text=" + encodeURIComponent(titulo) +
@@ -149,7 +150,7 @@
       "&location=" + encodeURIComponent(link);
 
     var ics = [
-      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//CPPEM//Black Friday//PT-BR", "CALSCALE:GREGORIAN",
+      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//CPPEM//Ultima Chance//PT-BR", "CALSCALE:GREGORIAN",
       "BEGIN:VEVENT",
       "UID:black-friday-unicive-2026@cppem.com.br",
       "DTSTAMP:" + utc(Date.now()),
@@ -159,7 +160,7 @@
       "DESCRIPTION:" + desc,
       "LOCATION:" + link,
       "URL:" + link,
-      "BEGIN:VALARM", "TRIGGER:-PT30M", "ACTION:DISPLAY", "DESCRIPTION:A Black Friday Unicive começa em 30 minutos", "END:VALARM",
+      "BEGIN:VALARM", "TRIGGER:-PT30M", "ACTION:DISPLAY", "DESCRIPTION:A oferta Última Chance Unicive abre em 30 minutos", "END:VALARM",
       "END:VEVENT", "END:VCALENDAR"
     ].join("\r\n");
 
@@ -179,7 +180,7 @@
      na noite da live:
        antes    → contagem, "Entrar na lista VIP"
        ao-vivo  → "Assistir ao vivo agora"
-       depois   → "A live acabou, veja a gravação"
+       depois   → "A oferta encerrou"
      Todo elemento com data-fase-so="x" só aparece na fase x.
      ========================================================= */
   var faseAtual = "";
@@ -222,8 +223,8 @@
 
     var resumo =
       faseAtual === "antes"   ? "faltam " + Number(v.d) + "d " + v.h + ":" + v.m + ":" + v.s :
-      faseAtual === "ao-vivo" ? "ao vivo agora no YouTube" :
-                                "live encerrada";
+      faseAtual === "ao-vivo" ? "oferta aberta até 10/11 às 23h59" :
+                                "oferta encerrada";
     if (dockTempo) dockTempo.textContent = resumo;
     if (formTempo) formTempo.textContent = resumo;
 
